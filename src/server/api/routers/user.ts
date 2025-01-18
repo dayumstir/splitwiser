@@ -17,5 +17,11 @@ export const userRouter = createTRPCRouter({
 
   create: publicProcedure
     .input(z.object({ name: z.string().min(1) }))
-    .mutation(async ({ input }) => {}),
+    .mutation(async ({ input }) => {
+      const user: User = {
+        id: 1,
+        name: input.name,
+      };
+      return user;
+    }),
 });
