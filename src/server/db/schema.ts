@@ -1,36 +1,63 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
-import { sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
-  index,
-  integer,
-  pgTableCreator,
-  timestamp,
+  pgTable as table,
+  serial,
   varchar,
+  timestamp,
+  numeric,
+  integer,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
-export const createTable = pgTableCreator((name) => `splitwiser_${name}`);
+// User
+export const user = table("user", {
+  id: serial("id").primaryKey(),
+  name: varchar("name").notNull(),
+  email: varchar("email").notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
-export const posts = createTable(
-  "post",
+export const userRelations = relations(user, ({ many }) => ({
+  trips: many(trip),
+  expenses: many(expense),
+}));
+
+// Trip
+export const trip = table("trip", {
+  id: serial("id").primaryKey(),
+  name: varchar("name").notNull(),
+  currency: varchar("currency").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  categories: varchar("categories").array(),
+  creatorId: integer("creator_id")
+    .references(() => user.id)
+    .notNull(),
+});
+
+// Expense
+export const expense = table("expense", {
+  id: serial("id").primaryKey(),
+  title: varchar("title").notNull(),
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: varchar("currency").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  paidBy: integer("paid_by")
+    .references(() => user.id)
+    .notNull(),
+  tripId: integer("trip_id")
+    .references(() => trip.id)
+    .notNull(),
+});
+
+// Expense Participants
+export const expenseParticipants = table(
+  "expense_participants",
   {
-    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
-    ),
+    expenseId: integer("expense_id").references(() => expense.id),
+    userId: integer("user_id").references(() => user.id),
+    amountOwed: numeric("amount_owed", { precision: 10, scale: 2 }).notNull(),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
+  (table) => ({
+    pk: primaryKey({ columns: [table.expenseId, table.userId] }),
+  }),
 );
