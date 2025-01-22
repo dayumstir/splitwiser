@@ -1,5 +1,5 @@
 {
-  "id": "61bac3c8-da17-45cb-9ede-51ccc03f3039",
+  "id": "a08c5386-2a97-4aa0-ae31-7451b7b07608",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -41,13 +41,13 @@
         },
         "paid_by": {
           "name": "paid_by",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "trip_id": {
-          "name": "trip_id",
-          "type": "integer",
+        "group_id": {
+          "name": "group_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         }
@@ -67,12 +67,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "expense_trip_id_trip_id_fk": {
-          "name": "expense_trip_id_trip_id_fk",
+        "expense_group_id_group_id_fk": {
+          "name": "expense_group_id_group_id_fk",
           "tableFrom": "expense",
-          "tableTo": "trip",
+          "tableTo": "group",
           "columnsFrom": [
-            "trip_id"
+            "group_id"
           ],
           "columnsTo": [
             "id"
@@ -84,76 +84,13 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.expense_participants": {
-      "name": "expense_participants",
-      "schema": "",
-      "columns": {
-        "expense_id": {
-          "name": "expense_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "amount_owed": {
-          "name": "amount_owed",
-          "type": "numeric(10, 2)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "expense_participants_expense_id_expense_id_fk": {
-          "name": "expense_participants_expense_id_expense_id_fk",
-          "tableFrom": "expense_participants",
-          "tableTo": "expense",
-          "columnsFrom": [
-            "expense_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "expense_participants_user_id_user_id_fk": {
-          "name": "expense_participants_user_id_user_id_fk",
-          "tableFrom": "expense_participants",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "expense_participants_expense_id_user_id_pk": {
-          "name": "expense_participants_expense_id_user_id_pk",
-          "columns": [
-            "expense_id",
-            "user_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "public.trip": {
-      "name": "trip",
+    "public.group": {
+      "name": "group",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -184,16 +121,16 @@
         },
         "creator_id": {
           "name": "creator_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "trip_creator_id_user_id_fk": {
-          "name": "trip_creator_id_user_id_fk",
-          "tableFrom": "trip",
+        "group_creator_id_user_id_fk": {
+          "name": "group_creator_id_user_id_fk",
+          "tableFrom": "group",
           "tableTo": "user",
           "columnsFrom": [
             "creator_id"
@@ -214,7 +151,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -229,6 +166,12 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "avatar_url": {
+          "name": "avatar_url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
