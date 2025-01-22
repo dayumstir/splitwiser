@@ -5,6 +5,7 @@ import {
   timestamp,
   numeric,
   uuid,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
 // User
@@ -32,6 +33,22 @@ export const group = table("group", {
     .references(() => user.id)
     .notNull(),
 });
+
+// User Group (Junction table for many-to-many relationship)
+export const userGroup = table(
+  "user_group",
+  {
+    userId: uuid("user_id")
+      .references(() => user.id)
+      .notNull(),
+    groupId: uuid("group_id")
+      .references(() => group.id)
+      .notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.groupId] }),
+  })
+);
 
 // Expense
 export const expense = table("expense", {

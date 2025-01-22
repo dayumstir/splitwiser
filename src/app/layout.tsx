@@ -1,7 +1,6 @@
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
@@ -21,7 +20,7 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider attribute="class" enableSystem defaultTheme="dark">
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>
