@@ -22,7 +22,11 @@ const BottomNav = () => {
             key={item.href}
             href={item.href}
             className={`flex h-full w-full flex-col items-center justify-center ${
-              pathname.includes(item.href)
+              (
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.includes(item.href)
+              )
                 ? "text-primary"
                 : "text-muted-foreground"
             }`}
