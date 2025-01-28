@@ -15,7 +15,7 @@ const BottomNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 border-t bg-background">
+    <nav className="bg-background pb-safe fixed right-0 bottom-0 left-0 border-t">
       <div className="flex h-16 items-center justify-around">
         {navItems.map((item) => (
           <Link
