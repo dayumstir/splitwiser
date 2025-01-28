@@ -15,7 +15,7 @@ const config = async (phase) => {
 
   if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
     const withSerwist = (await import("@serwist/next")).default({
-      swSrc: "app/sw.ts",
+      swSrc: "src/app/sw.ts",
       swDest: "public/sw.js",
     });
     return withSerwist(nextConfig);
