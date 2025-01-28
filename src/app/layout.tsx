@@ -20,7 +20,15 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_DEFAULT_TITLE,
-    // startUpImage: [],
+    // startupImage: []
+  },
+  icons: {
+    icon: [{ url: "/favicon.ico" }],
+    apple: [
+      { url: "/icons/apple-icon-180.png", sizes: "180x180", type: "image/png" },
+      { url: "/icons/apple-icon-152.png", sizes: "152x152", type: "image/png" },
+      { url: "/icons/apple-icon-120.png", sizes: "120x120", type: "image/png" },
+    ],
   },
   formatDetection: {
     telephone: false,
@@ -42,7 +50,6 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
 export const viewport: Viewport = {
